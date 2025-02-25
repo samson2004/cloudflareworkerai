@@ -15,5 +15,10 @@
 		"typescript": "^5.5.2",
 		"vitest": "~2.1.9",
 		"wrangler": "^3.109.1"
+	},
+	"dependencies": {
+		"green-base-7f2d": "file:",
+		"hono": "^4.7.2",
+		"openai": "^4.85.4"
 	}
 }
