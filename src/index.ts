@@ -91,64 +91,64 @@ app.post('/translateDocument',async(c)=>{
 	return new Response(JSON.stringify(response));
 })
 
-app.post('/transcribe', async (c) => {
-	try {
-	  const body = await c.req.json<{ youtubeUrl: string }>();
+// app.post('/transcribe', async (c) => {
+// 	try {
+// 	  const body = await c.req.json<{ youtubeUrl: string }>();
 
-	  if (!body.youtubeUrl) {
-		return c.json({ error: 'Missing YouTube URL' }, 400);
-	  }
+// 	  if (!body.youtubeUrl) {
+// 		return c.json({ error: 'Missing YouTube URL' }, 400);
+// 	  }
 
-	  // Extract YouTube video ID
-	  const videoId = extractYouTubeId(body.youtubeUrl);
-	  if (!videoId) {
-		return c.json({ error: 'Invalid YouTube URL' }, 400);
-	  }
+// 	  // Extract YouTube video ID
+// 	  const videoId = extractYouTubeId(body.youtubeUrl);
+// 	  if (!videoId) {
+// 		return c.json({ error: 'Invalid YouTube URL' }, 400);
+// 	  }
 
-	  // Fetch YouTube audio URL using yt-dlp API
-	  const audioUrl = await fetchAudioUrl(videoId);
-	  if (!audioUrl) {
-		return c.json({ error: 'Failed to fetch audio' }, 500);
-	  }
+// 	  // Fetch YouTube audio URL using yt-dlp API
+// 	  const audioUrl = await fetchAudioUrl(videoId);
+// 	  if (!audioUrl) {
+// 		return c.json({ error: 'Failed to fetch audio' }, 500);
+// 	  }
 
-	  // Send audio to Whisper API for transcription
-	  const transcript = await transcribeAudio(c.env.OPEN_AI_KEY, audioUrl);
-	  if (!transcript) {
-		return c.json({ error: 'Transcription failed' }, 500);
-	  }
+// 	  // Send audio to Whisper API for transcription
+// 	  const transcript = await transcribeAudio(c.env.OPEN_AI_KEY, audioUrl);
+// 	  if (!transcript) {
+// 		return c.json({ error: 'Transcription failed' }, 500);
+// 	  }
 
-	  return c.json({ transcript });
-	} catch (error) {
-	  console.error('Error:', error);
-	  return c.json({ error: 'Internal Server Error' }, 500);
-	}
-  });
+// 	  return c.json({ transcript });
+// 	} catch (error) {
+// 	  console.error('Error:', error);
+// 	  return c.json({ error: 'Internal Server Error' }, 500);
+// 	}
+//   });
 
-  // Extract YouTube Video ID
-  function extractYouTubeId(url: string): string | null {
-	const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]+)/);
-	return match ? match[1] : null;
-  }
+//   // Extract YouTube Video ID
+//   function extractYouTubeId(url: string): string | null {
+// 	const match = url.match(/(?:youtube\.com\/.*v=|youtu\.be\/)([\w-]+)/);
+// 	return match ? match[1] : null;
+//   }
 
-  // Fetch YouTube Audio using yt-dlp API
-  async function fetchAudioUrl(videoId: string): Promise<string | null> {
-	const response = await fetch(`https://your-yt-dlp-api.com/audio?videoId=${videoId}`);
-	const data = await response.json();
-	return data?.audioUrl || null;
-  }
+//   // Fetch YouTube Audio using yt-dlp API
+//   async function fetchAudioUrl(videoId: string): Promise<string | null> {
+// 	const response = await fetch(`https://your-yt-dlp-api.com/audio?videoId=${videoId}`);
+// 	const data = await response.json();
+// 	return data?.audioUrl || null;
+//   }
 
-  // Transcribe YouTube Audio with Whisper API
-  async function transcribeAudio(apiKey: string, audioUrl: string): Promise<string | null> {
-	const openai = new OpenAI({ apiKey });
+//   // Transcribe YouTube Audio with Whisper API
+//   async function transcribeAudio(apiKey: string, audioUrl: string): Promise<string | null> {
+// 	const openai = new OpenAI({ apiKey });
 
-	const response = await openai.audio.transcriptions.create({
-	  file: audioUrl,
-	  model: 'whisper-1',
-	  language: 'en',
-	});
+// 	const response = await openai.audio.transcriptions.create({
+// 	  file: audioUrl,
+// 	  model: 'whisper-1',
+// 	  language: 'en',
+// 	});
 
-	return response.text || null;
-  }
+// 	return response.text || null;
+//   }
 
 
 export default app;
